@@ -127,3 +127,11 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+
+# Ignore results files
+
+Projects/Project_Beech/results/
+
+# Ignore test
+
+run_model.py
