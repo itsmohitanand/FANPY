@@ -1,8 +1,8 @@
 from fanpy import Formind
 
-model_path = '/home/anand/github/FORMIND-addon/'	
-par_file_name='beech-forest-monoculture'
-project_path='/home/anand/github/FORMIND-addon/Projects/Project_Beech/'
+model_path = '/home/anand/linux_models/'	
+par_file_name='beech'
+project_path='/home/anand/Projects/FANPY/Projects/Project_Beech/'
 
 
 num_sim = 1

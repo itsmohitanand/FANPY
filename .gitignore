@@ -131,7 +131,6 @@ dmypy.json
 # Ignore results files
 
 Projects/Project_Beech/results/
-
+**/results/
 # Ignore test
 
-run_model.py

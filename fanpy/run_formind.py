@@ -12,7 +12,7 @@ import os
 from shutil import copyfile
 import numpy as np
 from tqdm import trange
-from forpy.io import read_climate_file, write_climate_file
+from fanpy.io import read_climate_file
 
 
 
@@ -40,43 +40,43 @@ class Formind(object):
 			
 		print(f'Simulation completed for {sim_id} scenario')
 
-	def generate_scenario_climate(self, climate_file:str, scenario:str, **kwargs):
-		self.scenario = scenario
-		if scenario=="percentage-change":
-			perc = kwargs['perc']
-			scenario_dict = {
-				'I':1+perc/100, # Increase
-				'U': 1,	# Usual
-				'D':1-perc/100, # Decrease
-			}
-		else:
-			pass
+	# def generate_scenario_climate(self, climate_file:str, scenario:str, **kwargs):
+	# 	self.scenario = scenario
+	# 	if scenario=="percentage-change":
+	# 		perc = kwargs['perc']
+	# 		scenario_dict = {
+	# 			'I':1+perc/100, # Increase
+	# 			'U': 1,	# Usual
+	# 			'D':1-perc/100, # Decrease
+	# 		}
+	# 	else:
+	# 		pass
 		
-		climate_file_path = self.project_path+'formind_parameters/Climate/'
+	# 	climate_file_path = self.project_path+'formind_parameters/Climate/'
 		
-		val_list = []
-		key_list = []
-		for key, val in scenario_dict.items():
-			key1 = key
-			val1 = val
-			for key, val in scenario_dict.items():
-				key2 = key
-				val2 = val
-				for key,val in scenario_dict.items():
-					key3 = key
-					val3 = val
-					val_list.append([val1,val2, val3])
-					key_list.append([key1,key2,key3])
+	# 	val_list = []
+	# 	key_list = []
+	# 	for key, val in scenario_dict.items():
+	# 		key1 = key
+	# 		val1 = val
+	# 		for key, val in scenario_dict.items():
+	# 			key2 = key
+	# 			val2 = val
+	# 			for key,val in scenario_dict.items():
+	# 				key3 = key
+	# 				val3 = val
+	# 				val_list.append([val1,val2, val3])
+	# 				key_list.append([key1,key2,key3])
 
-		for i in range(len(key_list)):
-			data = read_climate_file(climate_file, climate_file_path).values
-			val_arr = np.array(val_list[i])
-			key = key_list[i]
-			data[100000:105001,0:3] = val_arr* data[100000:105001,0:3]
+	# 	for i in range(len(key_list)):
+	# 		data = read_climate_file(climate_file, climate_file_path).values
+	# 		val_arr = np.array(val_list[i])
+	# 		key = key_list[i]
+	# 		data[100000:105001,0:3] = val_arr* data[100000:105001,0:3]
 
-			write_file_name = scenario+'_'+''.join(key)+'_perc_'+str(perc)+'_climate_400y.txt'
+	# 		write_file_name = scenario+'_'+''.join(key)+'_perc_'+str(perc)+'_climate_400y.txt'
 
-			write_climate_file(write_file_name, climate_file_path, nparray = data)
+	# 		write_climate_file(write_file_name, climate_file_path, nparray = data)
 
 	def change_par_climate(self, cfile_name:str):
 		

@@ -36,7 +36,7 @@ def plot_climate_cflux(cflux_data: Tuple, climate_data: np.array, time: np.array
 
     strt = 0
     end  = climate_data.shape[1]
-    end = 60
+    #end = 60
 
     av_rain = climate_data[0,strt:end]
     av_temp = climate_data[1,strt:end]
@@ -119,19 +119,19 @@ def plot_climate_cflux(cflux_data: Tuple, climate_data: np.array, time: np.array
     plt.close()
     
     ### Another figure
-    fig, (ax1, ax2) = plt.subplots(2,1, figsize=(8,8))
+    # fig, (ax1, ax2) = plt.subplots(2,1, figsize=(8,8))
 
-    av_gpp = np.mean(gpp_arr, axis =1)
+    # av_gpp = np.mean(gpp_arr, axis =1)
     
-    ax1.scatter(av_gpp, av_temp, color = "rebeccapurple")
-    ax1.set_ylabel("av_temp [..]")
-    ax1.set_xlabel("gpp [..]")
+    # ax1.scatter(av_gpp, av_temp, color = "rebeccapurple")
+    # ax1.set_ylabel("av_temp [..]")
+    # ax1.set_xlabel("gpp [..]")
 
-    ax2.scatter(av_gpp, av_rain, color = "rebeccapurple")
-    ax2.set_ylabel("av_rainp [..]")
-    ax2.set_xlabel("gpp [..]")
+    # ax2.scatter(av_gpp, av_rain, color = "rebeccapurple")
+    # ax2.set_ylabel("av_rainp [..]")
+    # ax2.set_xlabel("gpp [..]")
     
-    plt.savefig('plots/scatter.png')
+    # plt.savefig('plots/scatter.png')
 
     return 
 
