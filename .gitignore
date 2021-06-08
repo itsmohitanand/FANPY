@@ -134,3 +134,6 @@ Projects/Project_Beech/results/
 **/results/
 # Ignore test
 
+# Ingnore Project Files
+
+Projects/

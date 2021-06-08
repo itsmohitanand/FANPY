@@ -24,7 +24,7 @@ float	OutputStep	1.0
 	\u years
 	\d Time step of the output
 
-int	RandomInit	20
+int	RandomInit	0
 	\d Initializer for the random generator. Only important if N_Par.random_seed is false.
 
 comment =============================================================================
@@ -129,7 +129,7 @@ comment ========================================================================
 comment ----------------      Flags            --------------------------------------
 comment =============================================================================
 
-int	N_Par.random_seed_ON	1
+int	N_Par.random_seed_ON	0
 	\u -
 	\r 0:1
 	\d Flag for activating stochasticity (0: reproducible / 1: NOT reproducible)
@@ -647,14 +647,14 @@ end
 
 array	N_Par.Climate_File
 	\d File name and relative path (to the *.par) of daily climate data
-	weatherGermany_era5.txt
+	weatherGermany_era5_adjusted.txt
 	\d if dimension is 1, file is used for all patches
 	\d if dimension > 1, patch heterogeneities has to be activated for a proper use of all files
 	\i 0
 	typeOfArray	string
 	dimension	1
 data
-	weatherGermany_era5.txt
+	weatherGermany_era5_adjusted.txt
 end
 
 comment =============================================================================
