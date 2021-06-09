@@ -647,14 +647,14 @@ end
 
 array	N_Par.Climate_File
 	\d File name and relative path (to the *.par) of daily climate data
-	weatherGermany_era5_adjusted.txt
+	weather_sim_1000.txt
 	\d if dimension is 1, file is used for all patches
 	\d if dimension > 1, patch heterogeneities has to be activated for a proper use of all files
 	\i 0
 	typeOfArray	string
 	dimension	1
 data
-	weatherGermany_era5_adjusted.txt
+	weather_sim_1000.txt
 end
 
 comment =============================================================================

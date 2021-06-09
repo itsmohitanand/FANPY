@@ -1,15 +1,15 @@
 #!/bin/bash
  
-#SBATCH --job-name=download_cloud
-#SBATCH --time=30:00:00
-#SBATCH --mem-per-cpu=1G
+#SBATCH --job-name=run_sim
+#SBATCH --time=0-00:15:00
+#SBATCH --mem-per-cpu=16G
 #SBATCH --mail-type=ALL
  
 #SBATCH --mail-user=itsmohitanand@gmail.com
  
 # output files
-#SBATCH -o download_cloud.out
-#SBATCH -e download_cloud.err
+#SBATCH -o run_sim.out
+#SBATCH -e run_sim.err
 
 # Load Environment
 module purge
@@ -19,4 +19,4 @@ conda activate FANPY38
 
 # Run script
 
-python script_3_download.py
+python script_1_beech.py
