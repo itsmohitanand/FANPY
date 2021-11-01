@@ -1,9 +1,10 @@
 from fanpy import Formind
 
-model_path = '/data/compoundx/FORMIND/linux_models/'	
-par_file_name='beech'
-project_path='/data/compoundx/FORMIND/Project_Beech/'
+home_dir = '/p/project/hai_hhhack/anand1/'
 
+model_path = home_dir+'linux_models/'	
+par_file_name='beech'
+project_path= home_dir + 'Projects/FANPY/Projects/Project_Beech/'
 
 num_sim = 1
 model = Formind(model_path, project_path, par_file_name)

@@ -12,7 +12,7 @@ comment ========================================================================
 comment -------------------    Simulation Information	-----------------------------
 comment =============================================================================
 
-float	TimeEnd	1000
+float	TimeEnd	4000
 	\u year
 	\d Ending time of the simulation
 
@@ -24,7 +24,7 @@ float	OutputStep	1.0
 	\u years
 	\d Time step of the output
 
-int	RandomInit	0
+int	RandomInit	42
 	\d Initializer for the random generator. Only important if N_Par.random_seed is false.
 
 comment =============================================================================
@@ -46,7 +46,7 @@ int Switch.MortThreshold    100
     \r 0:10000
     \d Threshold for stochastic(<100)/deterministic(>100) mortality calculation
 
-int Switch.Ha      1
+int Switch.Ha      4
     \u sqrt(ha)
     \r 1:7
     \d Square root of the number of hectares which should be simulated
@@ -647,14 +647,13 @@ end
 
 array	N_Par.Climate_File
 	\d File name and relative path (to the *.par) of daily climate data
-	weather_sim_1000.txt
 	\d if dimension is 1, file is used for all patches
-	\d if dimension > 1, patch heterogeneities has to be activated for a proper use of all files
+	\d if dimension > 10, patch heterogeneities has to be activated for a proper use of all files
 	\i 0
 	typeOfArray	string
 	dimension	1
 data
-	weather_sim_1000.txt
+	weather_sim_10000_0.txt
 end
 
 comment =============================================================================

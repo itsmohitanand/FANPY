@@ -13,6 +13,8 @@
 import pandas as pd
 import matplotlib.pylab as plt
 import numpy as np
+
+
 from typing import Tuple
 
 def plot_climate_cflux(cflux_data: Tuple, climate_data: np.array, time: np.array, plot_path:str=".")-> None:
@@ -36,7 +38,7 @@ def plot_climate_cflux(cflux_data: Tuple, climate_data: np.array, time: np.array
 
     strt = 0
     end  = climate_data.shape[1]
-    #end = 60
+    end = 2000
 
     av_rain = climate_data[0,strt:end]
     av_temp = climate_data[1,strt:end]
@@ -54,7 +56,7 @@ def plot_climate_cflux(cflux_data: Tuple, climate_data: np.array, time: np.array
 
     ax1.plot(time, av_irradiance, color = "darkorange")
     ax1.set_xlim(left = time[0], right = time[-1])
-    ax1.set_ylabel("Solar Irradiance [$\mu mol$ $s^{-1}$ $m^{-2}$]")
+    ax1.set_ylabel("Solar Irradiance [$micro mol$ $s^{-1}$ $m^{-2}$]")
     
     # ax2.plot(time, av_pet)
     ax3.plot(time, av_temp, color = "indianred")

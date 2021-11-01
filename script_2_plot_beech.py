@@ -1,18 +1,16 @@
 from fanpy import prep_climate_cflux, plot_climate_cflux
 
-i = 9
+home_dir = '/p/project/hai_hhhack/anand1/'
 
-project_path='/data/compoundx/FORMIND/Project_Beech/'
+i = 0
 
-climate_file = f'weather_sim_10000_{i}.txt'
+project_data_path = home_dir + 'Project_Data/forest-carbon-flux/'
 
-cflux_file = 'beech_general.cflux'
-cflux_path = project_path+f'results_{i}/'+cflux_file
+climate_file = project_data_path+f'climate_data/weather_sim_10000_{i}.txt'
+cflux_file = project_data_path + f'formind_sim/results_1ha/beech_general.cflux'
 
-climate_path = project_path+'formind_parameters/Climate/'+climate_file
+plot_path = project_data_path+f'graphics/sim_10000_{i}_1ha.png'
 
-plot_path = project_path+f'graphics/sim_10000_{i}.png'
-
-cflux_data, data_climate, time = prep_climate_cflux(cflux_path, climate_path, 1)
+cflux_data, data_climate, time = prep_climate_cflux(cflux_file, climate_file, 1)
 
 plot_climate_cflux(cflux_data, data_climate, time, plot_path)
