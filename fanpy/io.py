@@ -46,9 +46,24 @@ def read_climate_file(file_name: str, path: str) :
     df = pd.read_csv(path+file_name, delimiter="\t")
     return df
 
-# def read_single_level(year:int, var:str = 'total_cloud_cover'):
+def read_cflux_file(cflux_path):
+    cflux_file = cflux_path.split('.')[0]+'_'+"00"+"."+cflux_path.split(".")[1]
+    
+    cflux = pd.read_csv(cflux_file, delimiter="\t", skiprows=2)
 
-#     data_path = '/data/compoundx/era_5_single/'+var+'/'+var+'_'+str(year)+'.nc'
-#     data = Dataset(data_path)['tcc'][:, 0, 0]
+    return cflux
 
-#     return data
+def read_climate(climate_path: str)->pd.DataFrame:
+    """  The climate data is read from the txt file
+	Args:
+		climate_path (str): The path to the climate text file.
+
+	Returns:
+		pd.DataFrame: pandas dataframe of climate data
+
+	""" 
+
+    climate = pd.read_csv(climate_path, delimiter=" ", skiprows=1, header=None)
+    climate.columns = ["rain[mm]","temperature[C]","irradiance[mumol/s/m2]","day_length[h]","PET[mm]", "CO2[ppm]"]    
+    
+    return climate

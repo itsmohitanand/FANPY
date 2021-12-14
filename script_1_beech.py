@@ -1,12 +1,15 @@
 from fanpy import Formind
 
-home_dir = '/p/project/hai_hhhack/anand1/'
+home_dir = '/p/project/hai_deep_c/project_data/forest-carbon-flux/'
 
-model_path = home_dir+'linux_models/'	
+model_path = home_dir	
 par_file_name='beech'
-project_path= home_dir + 'Projects/FANPY/Projects/Project_Beech/'
+project_path= home_dir + 'formind_sim/sim_100ha_42_0/'
 
 num_sim = 1
+print(model_path)
+print(project_path)
+print(par_file_name)
 model = Formind(model_path, project_path, par_file_name)
-sim_id = 'general'
+sim_id = '1ha'
 model.run(sim_id=sim_id, num_sim=num_sim)

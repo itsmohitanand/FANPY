@@ -1,7 +1,7 @@
 #!/bin/bash
  
 #SBATCH --job-name=run_sim
-#SBATCH --time=0-00:15:00
+#SBATCH --time=0-01:30:00
 #SBATCH --mem-per-cpu=16G
 #SBATCH --mail-type=ALL
  
