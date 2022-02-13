@@ -4,7 +4,7 @@ home_dir = '/p/project/hai_deep_c/project_data/forest-carbon-flux/'
 
 model_path = home_dir	
 par_file_name='beech'
-project_path= home_dir + 'formind_sim/sim_100ha_42_0/'
+project_path= home_dir + 'formind_sim/sim_100ha_mean/'
 
 num_sim = 1
 print(model_path)

@@ -14,8 +14,6 @@ module load GCCcore/.10.3.0 SciPy-Stack/2021-Python-3.8.5
 
 module load h5py/3.1.0-serial-Python-3.8.5
 
-# module load matplotlib/3.4.3
-
 source venv/bin/activate
 
 # Run script
