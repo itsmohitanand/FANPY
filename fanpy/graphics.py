@@ -38,7 +38,7 @@ def plot_climate_cflux(cflux_data: Tuple, climate_data: np.array, time: np.array
 
     strt = 0
     end  = climate_data.shape[1]
-    end = 1500
+    end = 2000
 
     av_rain = climate_data[0,strt:end]
     av_temp = climate_data[1,strt:end]

@@ -15,6 +15,7 @@ gpp = np.zeros(20)
 for i in range(20):
     path = ml_data_path + f'data_100ha_{i}.h5'
     with h5py.File(path, 'r') as f:
+        print(f['X']['irradiance'].shape)
         met[:, i, 0] =  np.mean(f['X']['irradiance'], axis = 0)
         met[:, i, 1] = np.mean(f['X']['rain'], axis = 0)
         met[:, i, 2] = np.mean(f['X']['temperature'], axis = 0)

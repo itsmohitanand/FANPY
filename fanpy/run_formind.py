@@ -11,7 +11,6 @@
 import os
 from shutil import copyfile
 import numpy as np
-from tqdm import trange
 from fanpy.io import read_climate_file
 
 class Formind(object):
@@ -26,7 +25,7 @@ class Formind(object):
 		par_file_path_ori = par_file_without_ext+par_file_ext
 	
 		ouput_path = self.project_path+'results/'
-		for i in trange(num_sim):
+		for i in range(num_sim):
 			par_file_path_new = par_file_without_ext+'_'+sim_id+'_'+str(i).zfill(2)+par_file_ext
 			copyfile(par_file_path_ori, par_file_path_new)
 			run_command = self.model_path+'formind '+par_file_path_new

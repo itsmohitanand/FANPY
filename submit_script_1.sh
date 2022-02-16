@@ -10,9 +10,9 @@
 #SBATCH -e for_sim_1.err
 #SBATCH --mail-user=itsmohitanand@gmail.com
 
-module load GCCcore/.10.3.0 SciPy-Stack/2021-Python-3.8.5
-
-module load h5py/3.1.0-serial-Python-3.8.5
+module load Stages/2022  GCCcore/.11.2.0 SciPy-bundle/2021.10 
+module load GCC/11.2.0  OpenMPI/4.1.1 h5py/3.5.0
+module load matplotlib/3.4.3
 
 source venv/bin/activate
 

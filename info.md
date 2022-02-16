@@ -44,6 +44,7 @@ int  N_Par.InitPools    0
 3. rename XX.restart into XX.inv and XX.restartplot into XX.iniplot
 
 4. add the following lines within the section "general" in your par file
+```
 string    N_Par.InvFileName    experiment.inv
     \d Name of initialization file for tree list input (from restart or inventory)
     \i 1 General
@@ -51,5 +52,26 @@ string    N_Par.InvFileName    experiment.inv
 string    N_Par.InitPoolsFileName    experiment.initpools
     \d Name of initialization file for carbon and seed pool input (from restartplot or measurements)
     \i 1 General
-
+```
 5. rename experiment.inv and experiment.initpools into your names of the file...
+
+## Information 
+
+- FORMIND takes takes 3 hour 20 minutes to run 2000 years
+
+## Running on eve
+
+Please replace the parameter Mort_Dinc_31 in the par file with the following lines: 
+```
+array N_Par.Mort_Dinc_31
+    \u per year
+    \d Parameters of the functional relationship used to calculate the added mortality rate dependent on the increment of the stem diameter
+    typeOfArray float
+    dimension 3 10
+data
+    0.25 0.25 0.25 0.25 0.25 0.25 0.25 0.25 0.25 0.25
+    0 0 0 0 0 0 0 0 0 0
+    0 0 0 0 0 0 0 0 0 0
+end
+
+```
