@@ -5,8 +5,12 @@ import numpy as np
 import matplotlib.pylab as plt
 from matplotlib import cm
 import copy
+import pandas as pd
 
-DATA_PATH = "/p/project/hai_deep_c/project_data/forest-carbon-flux/ml_data/"
+
+PROJECT_PATH = "/p/project/hai_deep_c/project_data/forest-carbon-flux/"
+
+DATA_PATH = PROJECT_PATH + "ml_data/"
 
 GRAPHICS_SAVE_FOLDER = DATA_PATH + "graphics/"
 
@@ -27,6 +31,7 @@ class Intervention(object):
 
         self.climate_data = copy.deepcopy(climate_data)
         self.intervention_dict  = intervention_dict
+        self.intervention_apllied = False
 
     def _precip_intervention(self, precip_intervention_tuple):
         tot_precip = np.mean(self.climate_data[:,precip_intervention_tuple[1]:precip_intervention_tuple[2], 1])
@@ -57,12 +62,26 @@ class Intervention(object):
             intervention_tuple = self.intervention_dict[f'event_{each}']
             self._intervene(intervention_tuple)
 
+        self.intervention_apllied = True
+        print(f'Intervention applied {combination}')
         return self.climate_data
 
+    # def write_climate(self, like_df):
 
-intervention_object = Intervention(climate_data=clim_data, intervention_dict=intervention.item())
+    #     assert self.intervention_apllied == True,  f'No intervention applied'
 
-clim_intervention = intervention_object.intervene(combination = [1,1,1,1,1,1,1])
+    #     like_df.drop(like_df.index[365*4:], inplace=True)
+    #     for i in range(self.climate_data.shape[0]):
+            
+
+like_df = pd.read_csv(PROJECT_PATH + '/formind_sim/sim_100ha_spin/formind_parameters/Climate/weather_sim_1000.txt', delimiter=' ')
+
+like_df.drop(like_df.index[365*4:], inplace=True)
+print(like_df)
+
+# intervention_object = Intervention(climate_data=clim_data, intervention_dict=intervention.item())
+
+# clim_intervention = intervention_object.intervene(combination = [1,1,1,1,1,1,1])
 
 
 
@@ -92,26 +111,26 @@ clim_intervention = intervention_object.intervene(combination = [1,1,1,1,1,1,1])
 
 # intervention_clim_1 = apply_intervention(clim_1, intervention=intervention.item()['event_7'])
 
-clim_1 = clim_data[0,:,:]
-clim_2 = clim_data[1,:,:]
+# clim_1 = clim_data[0,:,:]
+# clim_2 = clim_data[1,:,:]
 
-intervention_clim_1 = clim_intervention[0,:,:]
+# intervention_clim_1 = clim_intervention[0,:,:]
 
-fig , (ax1, ax2, ax3) = plt.subplots(3, 1, figsize = (20, 10))
+# fig , (ax1, ax2, ax3) = plt.subplots(3, 1, figsize = (20, 10))
 
-ax1.plot(intervention_clim_1[:,0], color = '#404788FF', linestyle = '--')
-ax1.plot(clim_1[:,0], color = 'r', alpha = 0.3, linestyle = '--')
-#ax1.plot(clim_2[:,0], color = 'b', alpha = 0.6, linestyle = '--')
+# ax1.plot(intervention_clim_1[:,0], color = '#404788FF', linestyle = '--')
+# ax1.plot(clim_1[:,0], color = 'r', alpha = 0.3, linestyle = '--')
+# #ax1.plot(clim_2[:,0], color = 'b', alpha = 0.6, linestyle = '--')
 
-ax2.plot(intervention_clim_1[:,1], color = '#404788FF', linestyle = '--')
-ax2.plot(clim_1[:,1], color = 'r', alpha = 0.3, linestyle = '--')
-#ax2.plot(clim_2[:,1], color = 'b', alpha = 0.2, linestyle = '--')
-
-
-ax3.plot(intervention_clim_1[:,2], color = '#404788FF', linestyle = '--')
-ax3.plot(clim_1[:,2], color = 'r', alpha = 0.3, linestyle = '--')
-#ax3.plot(clim_2[:,2], color = 'b', alpha = 0.6, linestyle = '--')
+# ax2.plot(intervention_clim_1[:,1], color = '#404788FF', linestyle = '--')
+# ax2.plot(clim_1[:,1], color = 'r', alpha = 0.3, linestyle = '--')
+# #ax2.plot(clim_2[:,1], color = 'b', alpha = 0.2, linestyle = '--')
 
 
-plt.savefig(GRAPHICS_SAVE_FOLDER + 'intervention_example.png')
+# ax3.plot(intervention_clim_1[:,2], color = '#404788FF', linestyle = '--')
+# ax3.plot(clim_1[:,2], color = 'r', alpha = 0.3, linestyle = '--')
+# #ax3.plot(clim_2[:,2], color = 'b', alpha = 0.6, linestyle = '--')
+
+
+# plt.savefig(GRAPHICS_SAVE_FOLDER + 'intervention_example.png')
 
