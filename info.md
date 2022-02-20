@@ -55,6 +55,12 @@ string    N_Par.InitPoolsFileName    experiment.initpools
 ```
 5. rename experiment.inv and experiment.initpools into your names of the file...
 
+6. Change the below code as well
+```
+int  N_Par.TreeListInput  1
+  
+int  N_Par.InitPools    1
+```
 ## Information 
 
 - FORMIND takes takes 3 hour 20 minutes to run 2000 years
