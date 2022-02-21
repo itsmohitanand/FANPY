@@ -9,12 +9,12 @@ home_dir = '/p/project/hai_deep_c/project_data/forest-carbon-flux/'
 
 
 intervention_list = get_combination(c=0)
-intervention_list.extend(get_combination(c=1))
-intervention_list.extend(get_combination(c=2))
-intervention_list.extend(get_combination(c=3))
-intervention_list.extend(get_combination(c=4))
-intervention_list.extend(get_combination(c=5))
-intervention_list.extend(get_combination(c=6))
+#intervention_list.extend(get_combination(c=1))
+# intervention_list.extend(get_combination(c=2))
+# intervention_list.extend(get_combination(c=3))
+# intervention_list.extend(get_combination(c=4))
+# intervention_list.extend(get_combination(c=5))
+# intervention_list.extend(get_combination(c=6))
 intervention_list.extend(get_combination(c=7))
 
 
@@ -50,10 +50,12 @@ for i in range(10):
 
 theta = 2*np.pi
 
-
-
-fig, ax = plt.subplots(1,1, figsize = (24,6))
 # mean_gpp = np.zeros(8)
+
+print(base_gpp)
+print(intervention_gpp[:,0])
+print(base_gpp - intervention_gpp[:,0])
+fig, ax = plt.subplots(1,1, figsize = (24,6))
 
 for r in range(num-1):
 
@@ -68,4 +70,4 @@ ax.tick_params(axis='x', labelrotation = 90)
 
 plt.legend()
 fig.tight_layout()
-plt.savefig('scratch.png')
+plt.savefig('scratch_2.png')
