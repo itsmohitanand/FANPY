@@ -12,6 +12,7 @@ import os
 from shutil import copyfile
 import numpy as np
 from fanpy.io import read_climate_file
+import time
 
 class Formind(object):
 	def __init__(self,model_path: str, project_path: str, par_file_name:str) -> None:
@@ -36,3 +37,49 @@ class Formind(object):
 			os.remove(par_file_path_new)
 			
 		print(f'Simulation completed for {sim_id} scenario')
+
+def run_formind_intervention(compound):
+	initial_time = time.time()
+
+	home_dir = '/p/project/hai_deep_c/project_data/forest-carbon-flux/'
+
+	par_file_name='beech'
+
+	c = np.sum(compound)
+
+	compound_string = ''.join(map(str, compound))
+
+
+	intervention_path = home_dir + f'formind_sim/compound_{c}/{compound_string}/'
+	model_path = intervention_path
+	project_path = intervention_path
+
+
+	for i in range(10):
+		initial_sim_time = time.time()
+
+		par_file = open(intervention_path + 'formind_parameters/beech.par', 'r')
+		list_lines = par_file.readlines()
+		list_lines[695] = f'    weather_intervention_c{c}_comb_{compound_string}_{i}.txt \n'
+		par_file.close()
+
+		par_file = open(intervention_path + 'formind_parameters/beech.par', 'w')
+		par_file.writelines(list_lines)
+		par_file.close()
+
+		# print(model_path)
+		# print(project_path)
+		# print(par_file_name)
+		model = Formind(model_path, project_path, par_file_name)
+		sim_id = f'c{c}_{i}'
+		model.run(sim_id=sim_id, num_sim=1)
+
+		print(f'Time taken for simulation {i} is {time.time()-initial_sim_time} seconds')
+
+	## Delete .res file for size 
+
+	cmd =  'rm '+intervention_path + 'results/*.res'
+	os.system(cmd)
+
+	print(f'Total time taken is {time.time()-initial_time} seconds')
+

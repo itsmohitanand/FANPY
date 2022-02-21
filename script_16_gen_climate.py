@@ -8,6 +8,8 @@ import copy
 import pandas as pd
 import os
 
+from fanpy.process import Intervention
+
 PROJECT_PATH = "/p/project/hai_deep_c/project_data/forest-carbon-flux/"
 
 DATA_PATH = PROJECT_PATH + "ml_data/"
@@ -25,71 +27,7 @@ clim_data = np.load(clim_data_f)
 intervention = np.load(intervention_f, allow_pickle = True)
 
 
-class Intervention(object):
-    def __init__(self, climate_data, intervention_dict) -> None:
-        super().__init__()
-
-        self.climate_data = copy.deepcopy(climate_data)
-        self.intervention_dict  = intervention_dict
-        self.intervention_apllied = False
-
-    def _precip_intervention(self, precip_intervention_tuple):
-        tot_precip = np.mean(self.climate_data[:,precip_intervention_tuple[1]:precip_intervention_tuple[2], 1])
-        diff_precip = precip_intervention_tuple[3]
-        factor = (tot_precip + diff_precip)/tot_precip
-
-        self.climate_data[:,precip_intervention_tuple[1]:precip_intervention_tuple[2], 1] = factor*self.climate_data[:,precip_intervention_tuple[1]:precip_intervention_tuple[2], 1]
-
-    def _bias_intervention(self, intervention_tuple, index):
-        
-        self.climate_data[:,intervention_tuple[1]:intervention_tuple[2],index] = self.climate_data[:,intervention_tuple[1]:intervention_tuple[2], index] + intervention_tuple[3]
-        
-    def _intervene(self, intervention_tuple):
-        if intervention_tuple[0] == 'rad':
-            index = 0
-            self._bias_intervention(intervention_tuple, index)
-        elif intervention_tuple[0] == 'temp':
-            index = 2
-            self._bias_intervention(intervention_tuple, index)
-        elif intervention_tuple[0] == 'precip':
-            self._precip_intervention(intervention_tuple)
-
-    def intervene(self, combination = [1, 1, 1, 1, 1, 1, 1] ):
-        self.combination = np.array(combination)
-        index_list = np.where(self.combination==1)[0]
-        if len(index_list)>0:
-            index_list+=1 # For event_index
-
-            for each in index_list:
-                intervention_tuple = self.intervention_dict[f'event_{each}']
-                self._intervene(intervention_tuple)
-
-        self.intervention_apllied = True
-        print(f'Intervention applied {self.combination}')
-        return self.climate_data
-
-    def write_climate(self, like_df, write_folder):
-
-        assert self.intervention_apllied == True,  f'No intervention applied'
-
-        like_df.drop(like_df.index[365*4:], inplace=True)
-
-        for i in range(self.climate_data.shape[0]):
-            like_df.iloc[:,0] = self.climate_data[i, :, 1]
-            like_df.iloc[:,1] = self.climate_data[i, :, 2]            
-            like_df.iloc[:,2] = self.climate_data[i, :, 0]
-
-            c = np.sum(self.combination)
-            comb_str = "".join(map(str, self.combination))
-
-            folder_path = write_folder + f'/compound_{c}/{comb_str}/'
-            isExist = os.path.exists(folder_path)
-
-            if not isExist:
-                os.makedirs(folder_path)
-                print(f"The new directory is created at {folder_path}")
-
-            like_df.to_csv(folder_path + f'weather_intervention_c{c}_comb_{comb_str}_{i}.txt', sep = ' ', index= False, float_format='%.3f')            
+           
 
 
 like_df = pd.read_csv(PROJECT_PATH + '/formind_sim/sim_100ha_spin/formind_parameters/Climate/weather_sim_1000.txt', delimiter=' ')
