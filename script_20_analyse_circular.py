@@ -3,7 +3,7 @@ import numpy as np
 import os
 import pandas as pd
 import matplotlib.pylab as plt
-
+import seaborn as sns
 
 home_dir = '/p/project/hai_deep_c/project_data/forest-carbon-flux/'
 
@@ -18,14 +18,14 @@ intervention_list = get_combination(c=0)
 intervention_list.extend(get_combination(c=7))
 
 
-base_gpp = np.zeros(10)
+base_gpp = np.zeros(100)
 
 num = len(intervention_list)
 print(num)
 intervention_gpp = np.zeros((10, num-1))
 
 xticklabels = []
-for i in range(10):
+for i in range(100):
     for j, intervention in enumerate(intervention_list[:num]):
         compound = np.array(intervention)
         
@@ -46,8 +46,6 @@ for i in range(10):
 
 
 
-
-
 theta = 2*np.pi
 
 # mean_gpp = np.zeros(8)
@@ -55,11 +53,11 @@ theta = 2*np.pi
 print(base_gpp)
 print(intervention_gpp[:,0])
 print(base_gpp - intervention_gpp[:,0])
-fig, ax = plt.subplots(1,1, figsize = (24,6))
+fig, ax = plt.subplots(1,1, figsize = (8,6))
 
 for r in range(num-1):
 
-    ax.scatter([r]*10, (base_gpp - intervention_gpp[:,r])*100)
+    ax.scatter([r]*100, (base_gpp - intervention_gpp[:,r])*100)
     # mean_gpp[r] = np.mean(base_gpp - intervention_gpp[:,r])*100
 
 ax.set_xticks(np.arange(num-1))

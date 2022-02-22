@@ -17,8 +17,8 @@ x = np.array([x1,x2,x3,x4,x5,x6,x7,x8,x9])
 print(x.shape)
 
 fig, (ax1, ax2, ax3) = plt.subplots(3,1)
-ax1.hist(x[:,0]*100, bins = 100)
-ax2.hist(x[:,2]*100, bins = 100)
-ax3.hist(x[:,3]*100, bins = 100)
+ax1.hist(x[:,0]*100, bins = 50)
+ax2.hist(x[:,2]*100, bins = 50)
+ax3.hist(x[:,3]*100, bins = 50)
 
 plt.savefig('scratch_3.png')

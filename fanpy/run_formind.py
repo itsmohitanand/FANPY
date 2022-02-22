@@ -55,7 +55,7 @@ def run_formind_intervention(compound):
 	project_path = intervention_path
 
 
-	for i in range(10):
+	for i in range(100):
 		initial_sim_time = time.time()
 
 		par_file = open(intervention_path + 'formind_parameters/beech.par', 'r')

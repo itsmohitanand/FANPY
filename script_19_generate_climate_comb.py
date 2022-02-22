@@ -23,7 +23,7 @@ intervention = np.load(intervention_f, allow_pickle = True)
 like_df = pd.read_csv(PROJECT_PATH + '/formind_sim/sim_100ha_spin/formind_parameters/Climate/weather_sim_1000.txt', delimiter=' ')
 
 
-c = 3
+c = 2
 list_compound = get_combination(c=c)
 
 for compound in list_compound:
