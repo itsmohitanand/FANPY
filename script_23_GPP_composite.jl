@@ -8,13 +8,14 @@ ENV["GKSwstype"] = "100"
 
 DATA_FOLDER = "/p/project/hai_deep_c/project_data/forest-carbon-flux/ml_data/"
 
+num_files = 10
 
-met = Array{Float64}(undef, 18000, 365, 3)
+met = Array{Float64}(undef, 9000*num_files, 365, 3)
 
-gpp = Array{Float64}(undef, 18000)
+gpp = Array{Float64}(undef, 9000*num_files,)
 
 
-for i=1:2
+for i=1:num_files
     fid = h5open(DATA_FOLDER*"data_100ha_$(i-1).h5", "r") 
     x = fid["X"]
     y = fid["Y"]
@@ -28,9 +29,9 @@ for i=1:2
     
 end
 
-X = Array{Float64}(undef, 18000-3, 365*4, 3)
+X = Array{Float64}(undef, 9000*num_files-3, 365*4, 3)
 
-Y = Array{Float64}(undef, 18000-3)
+Y = Array{Float64}(undef, 9000*num_files-3)
 
 for i=1:size(gpp)[1]-3
     X[i, :, 1] = vec(permutedims(met[i:i+3, :, 1], (2,1)))
@@ -38,48 +39,6 @@ for i=1:size(gpp)[1]-3
     X[i, :, 3] = vec(permutedims(met[i:i+3, :, 3], (2,1)))
 
     Y[i] = gpp[i+3]
-end
-
-num = 1 
-gpp_1 = Array{Float64}(undef, 18000-num)
-
-for i=1:size(gpp)[1]-num
-    gpp_1[i] = gpp[i+num]
-end
-
-num = 2 
-gpp_2 = Array{Float64}(undef, 18000-num)
-
-for i=1:size(gpp)[1]-num
-    gpp_2[i] = gpp[i+num]
-end
-
-num = 3 
-gpp_3 = Array{Float64}(undef, 18000-num)
-
-for i=1:size(gpp)[1]-num
-    gpp_3[i] = gpp[i+num]
-end
-
-num = 4 
-gpp_4 = Array{Float64}(undef, 18000-num)
-
-for i=1:size(gpp)[1]-num
-    gpp_4[i] = gpp[i+num]
-end
-
-num = 5 
-gpp_5 = Array{Float64}(undef, 18000-num)
-
-for i=1:size(gpp)[1]-num
-    gpp_5[i] = gpp[i+num]
-end
-
-num = 6 
-gpp_6 = Array{Float64}(undef, 18000-num)
-
-for i=1:size(gpp)[1]-num
-    gpp_6[i] = gpp[i+num]
 end
 
 
@@ -99,11 +58,14 @@ met_low_4 = X[(Y*100).<gpp_5p,:,:]
 met_not_low_4 = X[(Y*100).>=gpp_5p,:,:]
 
 mean_low = mean(met_low_4, dims = 1)
+std_low = std(met_low_4, dims = 1)
+
 mean_not_low = mean(met_not_low_4, dims = 1)
+std_not_low = std(met_not_low_4, dims = 1)
 
 
 f = Figure(backgroundcolor = RGBf(0.98, 0.98, 0.98),
-    resolution = (2000, 800))
+    resolution = (4000, 1200))
 
 gi = f[1,1:4] = GridLayout()
 gp = f[2,1:4] = GridLayout()
@@ -114,33 +76,14 @@ gai = f[4, 1:7] = GridLayout()
 gap = f[5, 1:7] = GridLayout()
 gat = f[6, 1:7] = GridLayout()
 
-
-w = 8
-ggs1 = f[1:3, w:w+2] = GridLayout()
-ggs2 = f[4:6, w:w+2] = GridLayout()
-ggs3 = f[1:3, w+3:w+5] = GridLayout()
-ggs4 = f[4:6, w+3:w+5] = GridLayout()
-ggs5 = f[1:3, w+6:w+8] = GridLayout()
-ggs6 = f[4:6, w+6:w+8] = GridLayout()
-
-
 axai = Axis(gai[1,1])
 axap = Axis(gap[1,1])
 axat = Axis(gat[1,1])
-
-axs1 = Axis(ggs1[1,1], xlabel = "GPP | t year", ylabel = "GPP | t-1 year")
-axs2 = Axis(ggs2[1,1], xlabel = "GPP | t year", ylabel = "GPP | t-2 year")
-axs3 = Axis(ggs3[1,1], xlabel = "GPP | t year", ylabel = "GPP | t-3 year")
-axs4 = Axis(ggs4[1,1], xlabel = "GPP | t year", ylabel = "GPP | t-4 year")
-axs5 = Axis(ggs5[1,1], xlabel = "GPP | t year", ylabel = "GPP | t-5 year")
-axs6 = Axis(ggs6[1,1], xlabel = "GPP | t year", ylabel = "GPP | t-6 year")
-
 
 axi = Axis(gi[1,1])
 axp = Axis(gp[1,1])
 axt = Axis(gt[1,1])
 axg = Axis(gg[1,1])
-
 
 
 lines!(axi, mean_met[1, :, 1])
@@ -151,81 +94,100 @@ density!(axg, gpp*100, label = "GPP")
 vlines!(axg, mgp, label = "mean : $(round(mgp,digits =2))", color = :blue)
 vlines!(axg, gpp_5p, label = "5th perc $(round(gpp_5p,digits =2))", color = :red)
 
-
 axislegend(axg, merge = true)
 
+x = [1:365*4;]
 
-lines!(axai, mean_low[1, :, 1]-mean_met[1, :, 1], label = "low")
-lines!(axap, mean_low[1, :, 2]-mean_met[1, :, 2], label = "low")
-lines!(axat, mean_low[1, :, 3]-mean_met[1, :, 3], label = "low")
+band!(axai, x, mean_not_low[1, :, 1]-mean_met[1, :, 1] - std_low[1, :, 1], mean_not_low[1, :, 1]-mean_met[1, :, 1] + std_not_low[1, :, 1], color = (:slategray2), label = "not_low +/- 1 std"  )
+band!(axai, x, mean_low[1, :, 1]-mean_met[1, :, 1] - std_low[1, :, 1], mean_low[1, :, 1]-mean_met[1, :, 1] + std_low[1, :, 1], color = (:brown1, 0.4), label = "low +/- 1 std" )
+lines!(axai, mean_low[1, :, 1]-mean_met[1, :, 1], label = "mean low", color = :yellow)
 
-lines!(axai, mean_not_low[1, :, 1]-mean_met[1, :, 1], label = "not_low")
-lines!(axap, mean_not_low[1, :, 2]-mean_met[1, :, 2], label = "not_low")
-lines!(axat, mean_not_low[1, :, 3]-mean_met[1, :, 3], label = "not_low")
+
+band!(axap, x, mean_not_low[1, :, 2]-mean_met[1, :, 2] - std_low[1, :, 2], mean_not_low[1, :, 2]-mean_met[1, :, 2] + std_not_low[1, :, 2], color = (:slategray2), label = "not_low +/- 1 std" )
+band!(axap, x, mean_low[1, :, 2]-mean_met[1, :, 2] - std_low[1, :, 2], mean_low[1, :, 2]-mean_met[1, :, 2] + std_low[1, :, 2], color = (:brown1, 0.4), label = "low +/- 1 std" )
+lines!(axap, mean_low[1, :, 2]-mean_met[1, :, 2], label = "mean low", color = :blue)
+
+
+band!(axat, x, mean_not_low[1, :, 3]-mean_met[1, :, 3] - std_low[1, :, 3], mean_not_low[1, :, 3]-mean_met[1, :, 3] + std_not_low[1, :, 3], color = (:slategray2), label = "not_low +/- 1 std")
+band!(axat, x, mean_low[1, :, 3]-mean_met[1, :, 3] - std_low[1, :, 3], mean_low[1, :, 3]-mean_met[1, :, 3] + std_low[1, :, 3], color = (:brown1, 0.4), label = "low +/- 1 std")
+lines!(axat, mean_low[1, :, 3]-mean_met[1, :, 3], label = "mean low", color = :green)
 
 axislegend(axai, merge = true)
+axislegend(axap, merge = true)
+axislegend(axat, merge = true)
 
 
-num  = 1
-scatter!(axs1, gpp[1:end-num]*100, gpp_1*100, markersize = 2.0)
-lines!(axs1, [800, 1300], [800, 1400], linestyle = :dash, color = :red)
-
-num  = 2
-scatter!(axs2, gpp[1:end-num].*100, gpp_2*100, markersize = 2.0)
-lines!(axs2, [800, 1300], [800, 1400], linestyle = :dash, color = :red)
-
-num  = 3
-scatter!(axs3, gpp[1:end-num]*100, gpp_3*100, markersize = 2.0)
-lines!(axs3, [800, 1300], [800, 1400], linestyle = :dash, color = :red)
-
-num  = 4
-scatter!(axs4, gpp[1:end-num]*100, gpp_4*100, markersize = 2.0)
-lines!(axs4, [800, 1300], [800, 1400], linestyle = :dash, color = :red)
-
-num  = 5
-scatter!(axs5, gpp[1:end-num]*100, gpp_5*100, markersize = 2.0)
-lines!(axs5, [800, 1300], [800, 1400], linestyle = :dash, color = :red)
-
-num  = 6
-scatter!(axs6, gpp[1:end-num]*100, gpp_6*100, markersize = 2.0)
-lines!(axs6, [800, 1300], [800, 1400], linestyle = :dash, color = :red)
+# lines!(axat, mean_low[1, :, 3]-mean_met[1, :, 3] + std_low[1, :, 3], label = "+ 1 std deviation")
 
 
+
+# lines!(axap, mean_not_low[1, :, 2]-mean_met[1, :, 2], label = "not_low")
+# lines!(axat, mean_not_low[1, :, 3]-mean_met[1, :, 3], label = "not_low")
+
+
+
+for i=1:5
+
+    w = 8+3*(i-1)
+    
+    s1 = f[1:3, w:w+2] = GridLayout()
+    s2 = f[4:6, w:w+2] = GridLayout()
+
+    axs1 = Axis(s1[1,1], xlabel = "GPP | t year", ylabel = "GPP | t-$i year")
+    axs2 = Axis(s2[1,1], xlabel = "GPP | t year", ylabel = "GPP | t-$(i+1) year")
+   
+
+    n  = 2*(i)-1
+    scatter!(axs1, gpp[1:end-n]*100, gpp[1+n:end]*100, markersize = 2.0)
+    lines!(axs1, [800, 1400], [800, 1400], linestyle = :dash, color = :black)
+    vlines!(axs1, gpp_5p, label = "5th perc $(round(gpp_5p,digits =2))", linestyle = :dash, color = :red)
+    hlines!(axs1, gpp_5p, label = "5th perc $(round(gpp_5p,digits =2))", linestyle = :dash, color = :red)
+
+    n  = 2*(i)
+    scatter!(axs2, gpp[1:end-n]*100, gpp[1+n:end]*100, markersize = 2.0)
+    lines!(axs2, [800, 1400], [800, 1400], linestyle = :dash, color = :red)
+
+    vlines!(axs2, gpp_5p, label = "5th perc $(round(gpp_5p,digits =2))", linestyle = :dash, color = :red)
+    hlines!(axs2, gpp_5p, label = "5th perc $(round(gpp_5p,digits =2))", linestyle = :dash, color = :red)
+end
+
+
+# save("../mean_met.pdf", f, px_per_unit = 2)
 
 save("../mean_met.png", f)
 
 
 
-N = size(gpp)[1] -1
+# N = size(gpp)[1] -1
 
-fs = 1
+# fs = 1
 
-t0 = 0
+# t0 = 0
 
-tmax = t0+ N*fs
+# tmax = t0+ N*fs
 
-t = [t0:fs:tmax;]
+# t = [t0:fs:tmax;]
 
-signal = gpp
+# signal = gpp
 
-F = fft(signal)
+# F = fft(signal)
 
-freqs = fftfreq(length(t), fs)
-freqs = fftshift(freqs)
+# freqs = fftfreq(length(t), fs)
+# freqs = fftshift(freqs)
 
-f1 = Figure(backgroundcolor = RGBf(0.98, 0.98, 0.98),
-    resolution = (1200, 600))
+# f1 = Figure(backgroundcolor = RGBf(0.98, 0.98, 0.98),
+#     resolution = (1200, 600))
 
-gt = f1[1,1] = GridLayout()
-gf = f1[2,1] = GridLayout()
+# gt = f1[1,1] = GridLayout()
+# gf = f1[2,1] = GridLayout()
 
-axt = Axis(gt[1,1])
-axf = Axis(gf[1,1])
+# axt = Axis(gt[1,1])
+# axf = Axis(gf[1,1])
 
-lines!(axt, t, signal)
-lines!(axf,freqs, abs.(F))
+# lines!(axt, t, signal)
+# lines!(axf,freqs, abs.(F))
 
-save("../wave.png", f1)
+# save("../wave.png", f1)
 
 
 
