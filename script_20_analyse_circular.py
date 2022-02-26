@@ -3,13 +3,12 @@ import numpy as np
 import os
 import pandas as pd
 import matplotlib.pylab as plt
-import seaborn as sns
 
 home_dir = '/p/project/hai_deep_c/project_data/forest-carbon-flux/'
 
 
 intervention_list = get_combination(c=0)
-#intervention_list.extend(get_combination(c=1))
+intervention_list.extend(get_combination(c=1))
 # intervention_list.extend(get_combination(c=2))
 # intervention_list.extend(get_combination(c=3))
 # intervention_list.extend(get_combination(c=4))
@@ -22,7 +21,7 @@ base_gpp = np.zeros(100)
 
 num = len(intervention_list)
 print(num)
-intervention_gpp = np.zeros((10, num-1))
+intervention_gpp = np.zeros((100, num-1))
 
 xticklabels = []
 for i in range(100):
